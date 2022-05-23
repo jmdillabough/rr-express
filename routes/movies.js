@@ -1,12 +1,14 @@
 import fetch from 'node-fetch'
 import express from 'express'
+import pkg from 'express-openid-connect'
+const {requiresAuth} = pkg
 
 const router = express.Router()
 
 const baseUrl = `https://api.themoviedb.org/3/movie/`
 
 // Get Popular Movies
-router.get('/', async (req, res) => {
+router.get('/', requiresAuth(), async (req, res) => {
 	try {
 		const results = await fetch(
 			`${baseUrl}popular?api_key=${process.env.TMBD_API}`

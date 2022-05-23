@@ -7,7 +7,6 @@ dotenv.config()
 
 // route
 import indexRouter from './routes/index.js'
-import loginRouter from './routes/login.js'
 import movieRouter from './routes/movies.js'
 
 // Auth0 Config
@@ -37,8 +36,11 @@ app.get('/login', (req, res) => {
 	res.send('Login')
 })
 
+app.get('/profile', (req, res) => {
+	res.send(JSON.stringify(req.oidc.user))
+})
+
 app.use('/', indexRouter)
-app.use('/login', loginRouter)
 app.use('/movies', movieRouter)
 
 app.listen(PORT, () => {
