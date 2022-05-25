@@ -8,6 +8,7 @@ dotenv.config()
 // route
 import indexRouter from './routes/index.js'
 import movieRouter from './routes/movies.js'
+import registerRouter from './routes/register.js'
 
 // Auth0 Config
 const config = {
@@ -32,16 +33,13 @@ app.get('/', (req, res) => {
 	res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
 })
 
-app.get('/login', (req, res) => {
-	res.send('Login')
-})
-
 app.get('/profile', (req, res) => {
 	res.send(JSON.stringify(req.oidc.user))
 })
 
 app.use('/', indexRouter)
 app.use('/movies', movieRouter)
+app.use('/register', registerRouter)
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port http://localhost:${PORT}`)
