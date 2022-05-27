@@ -7,7 +7,9 @@ import User from '../model/User.js'
 // @route  POST api/user/login
 // @access Public
 const loginUser = async (req, res) => {
-	res.send({message: 'Login'})
+	const {email, password} = req.body
+
+	const user = await User.findOne({email})
 }
 
 // Register a new user
@@ -39,6 +41,7 @@ const registerUser = async (req, res) => {
 
 	if (user) {
 		res.status(201).json({user})
+		console.log(user)
 	} else {
 		res.status(400).jsopn({err: 'Invalid data'})
 		return
@@ -49,7 +52,7 @@ const registerUser = async (req, res) => {
 // @route		api/user/me
 // @access	Public
 const getCurrentUser = async (req, res) => {
-	const user = await User.findOne({email: 'jdillabough87@gmail.com'})
+	const user = await User.findOne({})
 	if (user) {
 		res.status(400).json({user})
 		return
