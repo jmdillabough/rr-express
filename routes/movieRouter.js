@@ -1,36 +1,18 @@
 import fetch from 'node-fetch'
 import express from 'express'
-
 const router = express.Router()
 
-const baseUrl = `https://api.themoviedb.org/3/movie/`
+import authRoute from '../middleware/authMiddleware.js'
+import {
+	getMovieById,
+	getNowPlaying,
+	getPopularMovies
+} from '../controllers/movieController.js'
 
-// Get Popular Movies
-router.get('/', async (req, res) => {
-	try {
-		const results = await fetch(
-			`${baseUrl}popular?api_key=${process.env.TMBD_API}`
-		)
-		const data = await results.json()
-		res.send(data)
-	} catch (err) {
-		console.log(err)
-		res.status(500).send('An error occured fetching your data')
-	}
-})
+const url = 'https://api.themoviedb.org/3/'
 
-// Get movies playing now
-router.get('/now_playing', async (req, res) => {
-	try {
-		const results = await fetch(
-			`https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMBD_API}&page=1`
-		)
-		const data = await results.json()
-		res.json(data)
-	} catch (error) {
-		console.log(error)
-		res.status(500).send('An error occured fetching your data')
-	}
-})
+router.route('/now_playing').get(authRoute, getNowPlaying)
+router.route('/').get(authRoute, getPopularMovies)
+router.route('/:id').get(getMovieById)
 
 export default router

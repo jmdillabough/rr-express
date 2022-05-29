@@ -1,15 +1,12 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-
 import User from '../model/User.js'
 
-// Authenticate a user
-// @route  POST api/user/login
-// @access Public
-const loginUser = async (req, res) => {
-	const {email, password} = req.body
-
-	const user = await User.findOne({email})
+// Create token from JWT
+const createToken = (id) => {
+	return jwt.sign({id}, process.env.JWT_SECRET, {
+		expiresIn: '14d'
+	})
 }
 
 // Register a new user
@@ -40,7 +37,12 @@ const registerUser = async (req, res) => {
 	})
 
 	if (user) {
-		res.status(201).json({user})
+		res.status(201).json({
+			_id: user.id,
+			username: user.username,
+			email: user.email,
+			token: createToken(user._id)
+		})
 		console.log(user)
 	} else {
 		res.status(400).jsopn({err: 'Invalid data'})
@@ -48,15 +50,40 @@ const registerUser = async (req, res) => {
 	}
 }
 
-// Get Logged in User's data
-// @route		api/user/me
-// @access	Public
-const getCurrentUser = async (req, res) => {
-	const user = await User.findOne({})
-	if (user) {
-		res.status(400).json({user})
-		return
+// Authenticate a user
+// @route  POST api/user/login
+// @access Public
+const loginUser = async (req, res) => {
+	const {email, password} = req.body
+
+	const user = await User.findOne({email})
+
+	if (user && (await bcrypt.compare(password, user.password))) {
+		res.json({
+			_id: user.id,
+			username: user.username,
+			email: user.email,
+			token: createToken(user._id)
+		})
+	} else {
+		res.status(400).json({err: 'Invalid data'})
 	}
 }
 
-export {registerUser, loginUser, getCurrentUser}
+const userMovieList = async (req, res) => {
+	const {email} = req.body
+	const user = await findOne({email})
+
+	if (user) {
+		res.send(user)
+	}
+}
+
+// Get Logged in User's data
+// @route		api/user/me
+// Protected route
+const getCurrentUser = async (req, res) => {
+	res.send(req.user)
+}
+
+export {registerUser, loginUser, getCurrentUser, userMovieList}
