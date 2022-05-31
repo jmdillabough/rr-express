@@ -11,8 +11,8 @@ import {
 
 const url = 'https://api.themoviedb.org/3/'
 
-router.route('/now_playing').get(authRoute, getNowPlaying)
-router.route('/').get(authRoute, getPopularMovies)
+router.route('/now_playing').get(getNowPlaying)
+router.route('/').get(getPopularMovies)
 router.route('/:id').get(getMovieById)
 
 export default router

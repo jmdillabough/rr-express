@@ -6,9 +6,10 @@ const url = 'https://api.themoviedb.org/3/'
 // Get Popular Movies
 // @route api/movies
 const getPopularMovies = async (req, res) => {
+	let page = parseInt(req.query.page);
 	try {
 		const results = await fetch(
-			`${baseUrl}popular?api_key=${process.env.TMBD_API}`
+			`${baseUrl}popular?api_key=${process.env.TMBD_API}&page=${page}`
 		)
 		const data = await results.json()
 		res.send(data)
@@ -21,9 +22,10 @@ const getPopularMovies = async (req, res) => {
 // GET movies playing now
 // @route api/movies/now_playing
 const getNowPlaying = async (req, res) => {
+	let page = parseInt(req.query.page);
 	try {
 		const results = await fetch(
-			`https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMBD_API}&page=1`
+			`https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMBD_API}&page=${page}`
 		)
 		const data = await results.json()
 		res.json(data)

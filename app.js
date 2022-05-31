@@ -1,7 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import cookieParser from 'cookie-parser'
 import {connectDB} from './db/mongodb.js'
 dotenv.config()
 
@@ -12,7 +11,6 @@ import userRouter from './routes/userRouter.js'
 const app = express()
 const PORT = process.env.PORT || 3001
 app.use(cors())
-app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 

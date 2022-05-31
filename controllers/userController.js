@@ -11,7 +11,7 @@ const createToken = (id) => {
 }
 
 // Register a new user
-// @route		POST api/user
+// @route	POST api/user
 // @access	Public
 const registerUser = async (req, res) => {
 	const {email, username, password} = req.body
