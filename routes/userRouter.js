@@ -7,12 +7,14 @@ import {
 	loginUser,
 	getCurrentUser,
 	userMovieList,
-	editProfile
+	editProfile,
+	getAllProfiles
 } from '../controllers/userController.js'
 
+router.route('/me').get(authRoute, getCurrentUser)
+router.get('/profile', authRoute, getAllProfiles)
 router.post('/', registerUser)
 router.post('/login', loginUser)
-router.route('/me').get(authRoute, getCurrentUser)
 router.post('/db', userMovieList)
 router.post('/profile', authRoute, editProfile)
 

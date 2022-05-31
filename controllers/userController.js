@@ -52,7 +52,7 @@ const registerUser = async (req, res) => {
 }
 
 // Authenticate / Login a user
-// @route  POST api/user/login
+// @route	POST api/user/login
 // @access Public
 const loginUser = async (req, res) => {
 	const {email, password} = req.body
@@ -81,15 +81,15 @@ const userMovieList = async (req, res) => {
 }
 
 // Get Logged in User's data
-// @route		api/user/me
-// Protected route
+// @route	api/user/me
+// @access protected route
 const getCurrentUser = async (req, res) => {
 	res.send(req.user)
 }
 
 // Create || Update User Profile
 // @route api/user/profile
-// Protected route
+// @access protected route
 const editProfile = async (req, res) => {
 	const {website, description} = req.body
 
@@ -112,11 +112,12 @@ const editProfile = async (req, res) => {
 
 // Get all profiles
 // @route api/users/profile
-// Unprotected route
+// @access unprotected route
 const getAllProfiles = async (req, res) => {
 	try {
-		const profile = await Profile.find().populate('user', ['username'])
-		res.json(profile)
+		const profiles = await Profile.find().populate('user', ['username'])
+		console.log(profiles)
+		res.json(profiles)
 	} catch (err) {
 		console.log(err.message)
 		res.status(500).send('Error getting all profiles')
