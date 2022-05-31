@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import User from '../model/User.js'
+import Profile from '../model/Profile.js'
 
 // Create token from JWT
 const createToken = (id) => {
@@ -50,7 +51,7 @@ const registerUser = async (req, res) => {
 	}
 }
 
-// Authenticate a user
+// Authenticate / Login a user
 // @route  POST api/user/login
 // @access Public
 const loginUser = async (req, res) => {
@@ -86,4 +87,47 @@ const getCurrentUser = async (req, res) => {
 	res.send(req.user)
 }
 
-export {registerUser, loginUser, getCurrentUser, userMovieList}
+// Create || Update User Profile
+// @route api/user/profile
+// Protected route
+const editProfile = async (req, res) => {
+	const {website, description} = req.body
+
+	const profileParams = {}
+	if (website) profileParams.website = website
+	if (description) profileParams.description = description
+
+	try {
+		let profile = await Profile.findOneAndUpdate(
+			{user: req.user.id},
+			{$set: profileParams},
+			{new: true, upsert: true, setDefaultsOnInsert: true}
+		)
+		return res.json(profile)
+	} catch (err) {
+		console.error(err.message)
+		return res.status(500).send('Server Error')
+	}
+}
+
+// Get all profiles
+// @route api/users/profile
+// Unprotected route
+const getAllProfiles = async (req, res) => {
+	try {
+		const profile = await Profile.find().populate('user', ['username'])
+		res.json(profile)
+	} catch (err) {
+		console.log(err.message)
+		res.status(500).send('Error getting all profiles')
+	}
+}
+
+export {
+	registerUser,
+	loginUser,
+	getCurrentUser,
+	userMovieList,
+	editProfile,
+	getAllProfiles
+}

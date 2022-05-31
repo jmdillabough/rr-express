@@ -9,17 +9,11 @@ const Profile = mongoose.model(
 			required: true,
 			ref: 'User'
 		},
-		id: {
-			type: Number,
-			index: {
-				unique: true
-			}
-		},
-		original_title: {
+		description: {
 			type: String
 		},
-		year: {
-			type: Number
+		website: {
+			type: String
 		}
 	})
 )
