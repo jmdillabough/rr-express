@@ -15,7 +15,7 @@ router.route('/me').get(authRoute, getCurrentUser)
 router.get('/profile', authRoute, getAllProfiles)
 router.post('/', registerUser)
 router.post('/login', loginUser)
-router.post('/db', userMovieList)
+router.get('/db', userMovieList)
 router.post('/profile', authRoute, editProfile)
 
 export default router

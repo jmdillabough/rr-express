@@ -6,7 +6,12 @@ const url = 'https://api.themoviedb.org/3/'
 // Get Popular Movies
 // @route api/movies
 const getPopularMovies = async (req, res) => {
-	let page = parseInt(req.query.page);
+	let page;
+	if (req.query.page && req.query.page > 0) {
+		page = req.query.page
+	} else {
+		page = 1
+	}
 	try {
 		const results = await fetch(
 			`${baseUrl}popular?api_key=${process.env.TMBD_API}&page=${page}`
@@ -22,10 +27,15 @@ const getPopularMovies = async (req, res) => {
 // GET movies playing now
 // @route api/movies/now_playing
 const getNowPlaying = async (req, res) => {
-	let page = parseInt(req.query.page);
+	let page;
+	if (req.query.page && req.query.page > 0) {
+		page = req.query.page
+	} else {
+		page = 1
+	}
 	try {
 		const results = await fetch(
-			`https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMBD_API}&page=${page}`
+			`${baseUrl}now_playing?api_key=${process.env.TMBD_API}&page=${page}`
 		)
 		const data = await results.json()
 		res.json(data)
@@ -35,14 +45,34 @@ const getNowPlaying = async (req, res) => {
 	}
 }
 
+const tmdbTopRated = async (req, res) => {
+	let page;
+	if (req.query.page && req.query.page > 0) {
+		page = req.query.page
+	} else {
+		page = 1
+	}
+	try {
+		const results = await fetch(`${baseUrl}top_rated?api_key=${process.env.TMBD_API}&page=${page}`)
+		const data  = await results.json()
+		res.json(data)
+	} catch (err) {
+		res.status(500).json({err: "An error occured fetching top rated films"})
+	}
+}
+
 // Get movie by ID (i.e., Ad Astra = 419704)
 // route api/movies/:id
 const getMovieById = async (req, res) => {
+
+
 	const result = await fetch(
 		`${url}/movie/${req.params.id}?api_key=${process.env.TMBD_API}`
 	)
 	const data = await result.json()
+	
+
 	res.json(data)
 }
 
-export {getPopularMovies, getNowPlaying, getMovieById}
+export {getPopularMovies, getNowPlaying, getMovieById,tmdbTopRated}

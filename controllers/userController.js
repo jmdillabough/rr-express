@@ -73,7 +73,7 @@ const loginUser = async (req, res) => {
 
 const userMovieList = async (req, res) => {
 	const {email} = req.body
-	const user = await findOne({email})
+	const user = await User.findOne({email})
 
 	if (user) {
 		res.send(user)
