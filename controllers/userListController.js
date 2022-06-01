@@ -1,4 +1,8 @@
+import fetch from 'node-fetch'
 import UserList from '../model/UserList.js'
+
+const baseUrl = `https://api.themoviedb.org/3/movie/`
+const url = 'https://api.themoviedb.org/3/'
 
 // Get User's Favorite Moive List
 // @route api/list
@@ -17,7 +21,7 @@ const createUserList = async (req, res) => {
       }
 
       try {
-        // Using upsert option (creates new doc if no match is found):
+        // Using upsert option (creates new doc if no match is found)
         let userList = await UserList.findOneAndUpdate(
           { user: req.user.id },
           { $set: listParams },
@@ -44,6 +48,33 @@ const getAllLists = async (req, res) => {
 	}
 }
 
+const saveMovieById = async (req, res) => {
+    res.send(user)
+
+        // const result = await fetch(
+        //     `${url}/movie/${req.params.id}?api_key=${process.env.TMBD_API}`
+        // )
+        // const data = await result.json()
+        // console.log(data);
+    //     const user = await (await User.findById(email)).isSelected(
+    //         '-password'
+    //       )
+
+	// const userList = await UserList.create({
+	// 	title,
+    //     vote_average,
+    //     release_date,
+    //     overview
+	// })
+    // const newList = await userList.save()
+
+    //     res.json(data)
+    //  } catch (err) {
+    //     //  console.log(err);
+    //      res.status(500).json({err: "An error occured saving list"})
+    //  }
+}
 
 
-export {createUserList, getAllLists}
+
+export {createUserList, getAllLists, saveMovieById}

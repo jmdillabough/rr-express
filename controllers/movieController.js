@@ -64,14 +64,10 @@ const tmdbTopRated = async (req, res) => {
 // Get movie by ID (i.e., Ad Astra = 419704)
 // route api/movies/:id
 const getMovieById = async (req, res) => {
-
-
 	const result = await fetch(
 		`${url}/movie/${req.params.id}?api_key=${process.env.TMBD_API}`
 	)
 	const data = await result.json()
-	
-
 	res.json(data)
 }
 
